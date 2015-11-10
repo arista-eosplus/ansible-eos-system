@@ -93,7 +93,7 @@ Sample host_vars/leaf1.example.com
         encryption: md5
         secret: '$1$J0auuPhz$Pkr5NnHssW.Jqlk17Ylpk0'
         privilege: 15
-      role: network-admin
+        role: network-admin
       - name: simplebob
         nopassword: true
         privilege: 0
