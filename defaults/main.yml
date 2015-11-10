@@ -1,0 +1,4 @@
+---
+# defaults file for eos-system
+# these defaults will cause Ansible to skip all tasks
+eos_ip_routing_enabled: false
