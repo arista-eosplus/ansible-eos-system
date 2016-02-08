@@ -1,0 +1,8 @@
+! templates/ip_routing.j2
+#jinja2: trim_blocks: False
+
+{% if eos_ip_routing_enabled %}
+    ip routing
+{% else %}
+    no ip routing
+{% endif %}
