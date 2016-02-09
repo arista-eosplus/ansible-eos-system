@@ -7,7 +7,7 @@
 
 {% if state == 'absent' %}
     {# remove user if it exists #}
-    {% set user_block = base_config | re_search(username + "\s*") %}
+    {% set user_block = base_config | re_search(username + "\s+") %}
     {% if user_block %}
         no {{ username }}
     {% endif %}
