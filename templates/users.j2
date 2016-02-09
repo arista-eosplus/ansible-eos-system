@@ -1,14 +1,17 @@
 ! templates/users.j2
 #jinja2: trim_blocks: False
+#jinja2: lstrip_blocks: False
 
-{# item.name is required, no need to check for existence #}
 {% set username = "username %s" % item.name %}
-{% set sshkey = "" %}
+{% set state = item.state | default(default_user_state) %}
 
-{% if item.state is defined and item.state == 'absent' %}
-    {# user state is absent - remove user #}
-    {% set username = "no " + username %}
-{% else %}
+{% if state == 'absent' %}
+    {# remove user if it exists #}
+    {% set user_block = base_config | re_search(username + "\s*") %}
+    {% if user_block %}
+        no {{ username }}
+    {% endif %}
+{% elif state == 'present' %}
     {# assemble the full username command #}
     {% set username = username + " privilege %s" % item.privilege
         if item.privilege is defined
@@ -33,11 +36,11 @@
         {% endif %}
     {% endif %}
 
+    {{ username }}
+
     {% set sshkey = "username sshkey %s" % item.sshkey
         if item.sshkey is defined
         else "" %}
-{% endif %}
 
-{# Run the assembled username command #}
-{{ username }}
-{{ sshkey }}
+    {{ sshkey }}
+{% endif %}

@@ -20,8 +20,9 @@ ansible-galaxy install arista.eos-system
 Requirements
 ------------
 
-Requires the arista.eos role.  If you have not worked with the arista.eos role,
-consider following the [Quickstart][quickstart] guide.
+Requires an SSH connection for connectivity to your Arista device. You can use
+any of the built-in eos connection variables, or the convenience ``provider``
+dictionary.
 
 Role Variables
 --------------
@@ -64,10 +65,10 @@ Note: Asterisk (*) denotes the default value if none specified
 Dependencies
 ------------
 
-The eos-system role utilizes modules distributed within the arista.eos role.
-The eos-system roles requires:
+The eos-system role is built on modules included in the core Ansible code.
+These modules were added in ansible version 2.1
 
-- arista.eos version 1.2.0
+- Ansible 2.1.0
 
 Example Playbook
 ----------------
@@ -116,7 +117,7 @@ Then run with:
 License
 -------
 
-Copyright (c) 2015, Arista Networks EOS+
+Copyright (c) 2016, Arista Networks EOS+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

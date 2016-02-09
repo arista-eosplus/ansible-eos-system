@@ -1,4 +1,4 @@
 ---
 # defaults file for eos-system
-cache_eos_config: yes
 eos_ip_routing_enabled: no
+default_user_state: present
