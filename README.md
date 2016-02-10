@@ -66,7 +66,7 @@ Dependencies
 ------------
 
 The eos-system role is built on modules included in the core Ansible code.
-These modules were added in ansible version 2.1
+These modules were added in ansible version 2.1.0
 
 - Ansible 2.1.0
 
