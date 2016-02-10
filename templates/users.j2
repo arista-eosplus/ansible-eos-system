@@ -1,0 +1,46 @@
+! templates/users.j2
+#jinja2: trim_blocks: False
+#jinja2: lstrip_blocks: False
+
+{% set username = "username " ~ item.name %}
+{% set state = item.state | default(default_user_state) %}
+
+{% if state == 'absent' %}
+    {# remove user if it exists #}
+    {% set user_block = base_config | re_search(username) %}
+    {% if user_block %}
+        no {{ username }}
+    {% endif %}
+{% elif state == 'present' %}
+    {# assemble the full username command #}
+    {% set username = username + " privilege %s" % item.privilege
+        if item.privilege is defined
+        else username %}
+
+    {% set username = username + " role %s" % item.role
+        if item.role is defined
+        else username%}
+
+    {% if item.nopassword is defined and item.nopassword %}
+        {% set username = username + " nopassword" %}
+    {% elif item.secret is defined %}
+        {% if item.encryption is defined and item.encryption == 'md5' %}
+            {# md5 encrypted secret #}
+            {% set username = username + " secret 5 %s" % item.secret %}
+        {% elif item.encryption is defined and item.encryption == 'sha512' %}
+            {# sha512 encrypted secret #}
+            {% set username = username + " secret sha5 %s" % item.secret %}
+        {% else %}
+            {# unencrypted secret #}
+            {% set username = username + " secret %s" % item.secret %}
+        {% endif %}
+    {% endif %}
+
+    {{ username }}
+
+    {% set sshkey = "username sshkey %s" % item.sshkey
+        if item.sshkey is defined
+        else "" %}
+
+    {{ sshkey }}
+{% endif %}
