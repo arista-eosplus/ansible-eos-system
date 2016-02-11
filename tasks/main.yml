@@ -12,10 +12,14 @@
     use_ssl: "{{ use_ssl|default(omit) }}"
     username: "{{ username|default(omit) }}"
   register: output
+  no_log: "{{ no_log|default(true) }}"
+  when: base_config is not defined
 
 - name: Save EOS configuration
   set_fact:
-    base_config: "{{ output.result[0] }}"
+    base_config: "{{ output.stdout[0] }}"
+  no_log: "{{ no_log|default(true) }}"
+  when: base_config is not defined
 
 - name: Configure Arista EOS Hostname
   eos_template:
@@ -64,4 +68,4 @@
     use_ssl: "{{ use_ssl | default(omit) }}"
     username: "{{ username | default(omit) }}"
   when: eos_users is defined and item.name|mandatory
-  with_items: "{{ eos_users }}"
+  with_items: "{{ eos_users | default() }}"
