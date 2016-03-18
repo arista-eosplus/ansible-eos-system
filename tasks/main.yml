@@ -13,16 +13,20 @@
     username: "{{ username|default(omit) }}"
   no_log: false
   register: output
+  no_log: "{{ no_log|default(true) }}"
+  when: _eos_config is not defined
 
 - name: Save EOS configuration
   set_fact:
-    base_config: "{{ output.result[0] }}"
+    _eos_config: "{{ output.stdout[0] }}"
+  no_log: "{{ no_log|default(true) }}"
+  when: _eos_config is not defined
 
-- name: Configure Arista EOS Hostname
+- name: Arista EOS Hostname resources
   eos_template:
     src: hostname.j2
     include_defaults: true
-    config: "{{ base_config | default(omit) }}"
+    config: "{{ _eos_config | default(omit) }}"
     auth_pass: "{{ auth_pass | default(omit) }}"
     authorize: "{{ authorize | default(omit) }}"
     host: "{{ host | default(omit) }}"
@@ -34,11 +38,11 @@
     username: "{{ username | default(omit) }}"
   when: hostname is defined
 
-- name: Configure Arista EOS IP Routing
+- name: Arista EOS IP Routing resources
   eos_template:
     src: ip_routing.j2
     include_defaults: true
-    config: "{{ base_config | default(omit) }}"
+    config: "{{ _eos_config | default(omit) }}"
     auth_pass: "{{ auth_pass | default(omit) }}"
     authorize: "{{ authorize | default(omit) }}"
     host: "{{ host | default(omit) }}"
@@ -50,11 +54,11 @@
     username: "{{ username | default(omit) }}"
   when: eos_ip_routing_enabled is defined
 
-- name: Configure Arista EOS CLI Users
+- name: Arista EOS CLI User resources
   eos_template:
     src: users.j2
     include_defaults: true
-    config: "{{ base_config | default(omit) }}"
+    config: "{{ _eos_config | default(omit) }}"
     auth_pass: "{{ auth_pass | default(omit) }}"
     authorize: "{{ authorize | default(omit) }}"
     host: "{{ host | default(omit) }}"
@@ -64,5 +68,5 @@
     transport: 'cli'
     use_ssl: "{{ use_ssl | default(omit) }}"
     username: "{{ username | default(omit) }}"
-  when: eos_users is defined and item.name|mandatory
-  with_items: "{{ eos_users }}"
+  when: item.name is defined
+  with_items: "{{ eos_users | default([]) }}"
