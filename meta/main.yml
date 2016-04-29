@@ -35,6 +35,10 @@ galaxy_info:
   description: Role for managing EOS global system configuration
   company: Arista
   license: BSD-3
+  platforms:
+    - name: eos
+      versions:
+        - all
   min_ansible_version: 2.1.0
   categories:
     - networking
