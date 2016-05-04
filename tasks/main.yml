@@ -1,7 +1,7 @@
 ---
 - name: Gather EOS configuration
   eos_command:
-    commands: 'show running-config | exclude \.\*'
+    commands: 'show running-config all | exclude \.\*'
     provider: "{{ provider|default(omit) }}"
     auth_pass: "{{ auth_pass|default(omit) }}"
     authorize: "{{ authorize|default(omit) }}"
