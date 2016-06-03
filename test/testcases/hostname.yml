@@ -1,0 +1,14 @@
+---
+defaults:
+  module: hostname
+
+testcases:
+  - name: Set hostname (previously no hostname)
+    arguments:
+      hostname: test-hostname
+    setup: |
+      no hostname
+    present: |
+      hostname test-hostname
+    absent: |
+      no hostname
