@@ -1,0 +1,24 @@
+---
+defaults:
+  module: ip_routing
+
+testcases:
+  - name: Enable ip routing
+    arguments:
+      eos_ip_routing_enabled: true
+    setup: |
+      no ip routing
+    present: |
+      ip routing
+    absent: |
+      no ip routing
+
+  - name: Disable ip routing
+    arguments:
+      eos_ip_routing_enabled: false
+    setup: |
+      ip routing
+    present: |
+      no ip routing
+    absent: |
+      ip routing

@@ -2,4 +2,12 @@
 #jinja2: trim_blocks: False
 #jinja2: lstrip_blocks: False
 
+{% if hostname == '' %}
+
+no hostname
+
+{% else %}
+
 hostname {{ hostname }}
+
+{% endif %}

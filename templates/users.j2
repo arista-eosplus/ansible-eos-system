@@ -6,41 +6,44 @@
 {% set state = item.state | default(default_user_state) %}
 
 {% if state == 'absent' %}
-    {# remove user if it exists #}
-    {% set user_block = _eos_config | re_search(username + "\s+") %}
-    {% if user_block %}
-        no {{ username }}
-    {% endif %}
+   {# remove user if it exists #}
+   {% set user_block = _eos_config | re_search(username + "\s+") %}
+   {% if user_block %}
+
+no {{ username }}
+
+   {% endif %}
 {% elif state == 'present' %}
-    {# assemble the full username command #}
-    {% set username = username + " privilege %s" % item.privilege
-        if item.privilege is defined
-        else username %}
+   {# assemble the full username command #}
+   {% set username = username + " privilege %s" % item.privilege
+       if item.privilege is defined
+       else username + " privilege 1" %}
 
-    {% set username = username + " role %s" % item.role
-        if item.role is defined
-        else username%}
+   {% set username = username + " role %s" % item.role
+      if item.role is defined
+      else username%}
 
-    {% if item.nopassword is defined and item.nopassword %}
-        {% set username = username + " nopassword" %}
-    {% elif item.secret is defined %}
-        {% if item.encryption is defined and item.encryption == 'md5' %}
-            {# md5 encrypted secret #}
-            {% set username = username + " secret 5 %s" % item.secret %}
-        {% elif item.encryption is defined and item.encryption == 'sha512' %}
-            {# sha512 encrypted secret #}
-            {% set username = username + " secret sha5 %s" % item.secret %}
-        {% else %}
-            {# unencrypted secret #}
-            {% set username = username + " secret %s" % item.secret %}
-        {% endif %}
-    {% endif %}
+   {% if item.nopassword is defined and item.nopassword %}
+      {% set username = username + " nopassword" %}
+   {% elif item.secret is defined %}
+      {% if item.encryption is defined and item.encryption == 'md5' %}
+         {# md5 encrypted secret #}
+         {% set username = username + " secret 5 %s" % item.secret %}
+      {% elif item.encryption is defined and item.encryption == 'sha512' %}
+         {# sha512 encrypted secret #}
+         {% set username = username + " secret sha5 %s" % item.secret %}
+      {% else %}
+         {# unencrypted secret #}
+         {% set username = username + " secret %s" % item.secret %}
+      {% endif %}
+   {% endif %} {# item.nopassword / item.secret #}
 
-    {{ username }}
+{{ username }}
 
-    {% set sshkey = "username sshkey %s" % item.sshkey
-        if item.sshkey is defined
-        else "" %}
+   {% if item.sshkey is defined %}
+      {% set sshkey = "username %s sshkey %s" % (item.name, item.sshkey) %}
 
-    {{ sshkey }}
+{{ sshkey }}
+
+   {% endif %} {# item.sshkey is defined #}
 {% endif %}

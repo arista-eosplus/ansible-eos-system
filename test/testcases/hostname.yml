@@ -12,3 +12,23 @@ testcases:
       hostname test-hostname
     absent: |
       no hostname
+
+  - name: Change hostname
+    arguments:
+      hostname: test-hostname2
+    setup: |
+      hostname change-me-now
+    present: |
+      hostname test-hostname2
+    absent: |
+      hostname change-me-now
+
+  - name: Unset hostname
+    arguments:
+      hostname: ''
+    setup: |
+      hostname remove-this-hostname
+    present: |
+      no hostname
+    absent: |
+      hostname remove-this-hostname

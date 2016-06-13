@@ -1,0 +1,122 @@
+---
+defaults:
+  module: users
+
+testcases:
+  - name: Add users, no secret
+    arguments:
+      eos_users:
+        - name: userbob
+          nopassword: true
+          role: network-operator
+          sshkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSmxcLIgOTkwiGIGUPw93HeRD10hnSI28crLe27vp7XqC/iod/tRNpk9uHaN1ogLpytxHYLCoHqK53oVFpviZbtgEmzoftWkuWVFYihacTWaLE2Pk+ntnaYeHgevLhhDWe+pDU0NNh85txD7Noh6vN3xEoMfxNInHToIVONAqK2ClbI2EgoY85okEgIiH2egT+ZKJDTqlRVfmJhxTIj7hJPUFFydORP056gSH5/0NPRRe4W0hnl/56ybj8Tfw3EFR8gMbrRlCAfvXJMEiPqTVs7ClWTFlgf/Pa2adFxXh61GoXrQc35kb5AA3aJ/ibjBkgApu7dg00M1eEVA8Q9hXT userbob@dut
+        - name: userjan
+          nopassword: true
+          role: network-admin
+          privilege: 10
+        - name: usertommy
+          nopassword: true
+          role: network-admin
+        - name: usermaria
+          nopassword: true
+          role: network-operator
+          privilege: 0
+    setup: |
+      no username userbob
+      no username userjan
+      no username usertommy
+      no username usermaria
+    present: |
+      username userbob privilege 1 role network-operator nopassword
+      username userbob sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSmxcLIgOTkwiGIGUPw93HeRD10hnSI28crLe27vp7XqC/iod/tRNpk9uHaN1ogLpytxHYLCoHqK53oVFpviZbtgEmzoftWkuWVFYihacTWaLE2Pk+ntnaYeHgevLhhDWe+pDU0NNh85txD7Noh6vN3xEoMfxNInHToIVONAqK2ClbI2EgoY85okEgIiH2egT+ZKJDTqlRVfmJhxTIj7hJPUFFydORP056gSH5/0NPRRe4W0hnl/56ybj8Tfw3EFR8gMbrRlCAfvXJMEiPqTVs7ClWTFlgf/Pa2adFxXh61GoXrQc35kb5AA3aJ/ibjBkgApu7dg00M1eEVA8Q9hXT userbob@dut
+      username userjan privilege 10 role network-admin nopassword
+      username usertommy privilege 1 role network-admin nopassword
+      username usermaria privilege 0 role network-operator nopassword
+
+  - name: Add users, md5 secret
+    arguments:
+      eos_users:
+        - name: usersecret01
+          encryption: md5
+          secret: $1$XvGXuTi9$RE5WoI023gM9cc5d04ztv1
+          role: network-operator
+          privilege: 12
+          sshkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClGC8wWqrnwttJ30NSnFyLkEhup9Z1PcKKcn5W5hMJ49kIG9Csozyq5PaZ9YaHFSDzndR5t8hU7ONOerFAYlHvISrwhkiJ6uRtRUKO1FZr0DgzqBIAnLzQEvu320MtU5JEMSOTl5gL4NWkTxtWfLCYuuERBeMTxGgLA7tTLtmxt8uWoELut1ZcU/1BBI0CJRUGI4GzsbM+kNhYOgjY/j1tlNBml1vI/KCOM7nE+YZ7NXFxShMJ37VhR/FUc0hReCGmGXSr5J9fMfCPn+V9iGwyiHhqgnqQg/OS2zGUHTrO5vojlsYbEI0gnvgXzEWb1E9YkWbnFCHPRhJHjGpv9dI/ usersecret01@dut
+        - name: usersecret02
+          encryption: md5
+          secret: $1$xPJ0mdpF$o/328E2yV6ApJptZRZgzV/
+          role: network-admin
+        - name: usersecret03
+          encryption: md5
+          secret: $1$7oeo2EQ/$e5s2GVWSxYeBLNtLEUbds1
+          role: network-operator
+          privilege: 6
+    setup: |
+      no username usersecret01
+    present: |
+      username usersecret01 privilege 12 role network-operator secret 5 $1$XvGXuTi9$RE5WoI023gM9cc5d04ztv1
+      username usersecret01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClGC8wWqrnwttJ30NSnFyLkEhup9Z1PcKKcn5W5hMJ49kIG9Csozyq5PaZ9YaHFSDzndR5t8hU7ONOerFAYlHvISrwhkiJ6uRtRUKO1FZr0DgzqBIAnLzQEvu320MtU5JEMSOTl5gL4NWkTxtWfLCYuuERBeMTxGgLA7tTLtmxt8uWoELut1ZcU/1BBI0CJRUGI4GzsbM+kNhYOgjY/j1tlNBml1vI/KCOM7nE+YZ7NXFxShMJ37VhR/FUc0hReCGmGXSr5J9fMfCPn+V9iGwyiHhqgnqQg/OS2zGUHTrO5vojlsYbEI0gnvgXzEWb1E9YkWbnFCHPRhJHjGpv9dI/ usersecret01@dut
+      username usersecret02 privilege 1 role network-admin secret 5 $1$xPJ0mdpF$o/328E2yV6ApJptZRZgzV/
+      username usersecret03 privilege 6 role network-operator secret 5 $1$7oeo2EQ/$e5s2GVWSxYeBLNtLEUbds1
+
+  - name: Remove users
+    arguments:
+      eos_users:
+        - name: baduser01
+          state: absent
+        - name: baduser02
+          state: absent
+        - name: baduser03
+          state: absent
+    setup: |
+      no username baduser01
+      no username baduser02
+      no username baduser03
+      username baduser01 privilege 1 role network-operator nopassword
+      username baduser02 privilege 8 role network-operator secret 5 $1$j47ZatzU$ppPbrqfHZEqiR4G5QtdwG1
+      username baduser03 privilege 6 role network-operator secret 5 $1$Zn3BYTLM$dAzIpKneVFKsh8W4qUStN/
+      username baduser01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5iZvhXxj8s4wa4YW4qo7brnrlBfX6/gpF63IOV7AgymtxNKNtHRP7GY6Ko2oOFL8uKkPtvUhcJy9eEr6ngb7ffweZGP5ssBAt7yHsmW4F8GEDzpl+WGTQCN4+q7ofl2JFK+QklZc0v1+HdiCCZqFduJIR7LdrRGH/WhhiF26toeSiQchh4pMXT3n2oNRila57ssihXzEY1mA9pKQM6ke7z3GiI6VHOw+9bdfymsf+MiKI5rXCZuZbZGu9TceNpY2n/492v+/G088w5aFogn8WQ44ESFDBXymDxCmhdlye48qFVA2WMqqsB8wvkZiaVpkgfvXiukl/O5JEzkltdDc/ baduser01@dut
+      username baduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIq8HJyNeMrKqkdidMqOqC2/vDGR2j4khK6EbPyHZ3nVswIa/yeg7G4L+hk/ZBgramNq6ZSLUkpUJ82N625+Jd/+LhdyneXycHLEkFlAMW/vNPtby6uob2Ew0l9Ovems+vnKLmliuOwNq0pZ0BpQfbCgi6xk/uiokb2TQUE7b2oSACWf9lFUmkFTGXngiVPkd4iySXrX++E+/XjspZZ0+PPKQ25BNq7oCFdlecikC7rqlm/Eg+lsyqkC1eDejnzWyTNZbsD5qbBdOSLWKeqPSeVEf/sCq/R1dk26FpoSFXBPbqpcJCcMzjhPza7/VWalLu1XrbnqXCl4ieKltvFSc1 baduser03@dut
+    absent: |
+      username baduser01 privilege 1 role network-operator nopassword
+      username baduser02 privilege 8 role network-operator secret 5 $1$j47ZatzU$ppPbrqfHZEqiR4G5QtdwG1
+      username baduser03 privilege 6 role network-operator secret 5 $1$Zn3BYTLM$dAzIpKneVFKsh8W4qUStN/
+      username baduser01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5iZvhXxj8s4wa4YW4qo7brnrlBfX6/gpF63IOV7AgymtxNKNtHRP7GY6Ko2oOFL8uKkPtvUhcJy9eEr6ngb7ffweZGP5ssBAt7yHsmW4F8GEDzpl+WGTQCN4+q7ofl2JFK+QklZc0v1+HdiCCZqFduJIR7LdrRGH/WhhiF26toeSiQchh4pMXT3n2oNRila57ssihXzEY1mA9pKQM6ke7z3GiI6VHOw+9bdfymsf+MiKI5rXCZuZbZGu9TceNpY2n/492v+/G088w5aFogn8WQ44ESFDBXymDxCmhdlye48qFVA2WMqqsB8wvkZiaVpkgfvXiukl/O5JEzkltdDc/ baduser01@dut
+      username baduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIq8HJyNeMrKqkdidMqOqC2/vDGR2j4khK6EbPyHZ3nVswIa/yeg7G4L+hk/ZBgramNq6ZSLUkpUJ82N625+Jd/+LhdyneXycHLEkFlAMW/vNPtby6uob2Ew0l9Ovems+vnKLmliuOwNq0pZ0BpQfbCgi6xk/uiokb2TQUE7b2oSACWf9lFUmkFTGXngiVPkd4iySXrX++E+/XjspZZ0+PPKQ25BNq7oCFdlecikC7rqlm/Eg+lsyqkC1eDejnzWyTNZbsD5qbBdOSLWKeqPSeVEf/sCq/R1dk26FpoSFXBPbqpcJCcMzjhPza7/VWalLu1XrbnqXCl4ieKltvFSc1 baduser03@dut
+
+  - name: Modify users
+    arguments:
+      eos_users:
+        - name: gooduser01
+          role: network-operator
+          nopassword: true
+        - name: gooduser02
+          role: network-operator
+          encryption: md5
+          secret: $1$XvGXuTi9$RE5WoI023gM9cc5d04ztv1
+          privilege: 12
+        - name: gooduser03
+          role: network-operator
+          encryption: md5
+          secret: $1$j47ZatzU$ppPbrqfHZEqiR4G5QtdwG1
+          sshkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClGC8wWqrnwttJ30NSnFyLkEhup9Z1PcKKcn5W5hMJ49kIG9Csozyq5PaZ9YaHFSDzndR5t8hU7ONOerFAYlHvISrwhkiJ6uRtRUKO1FZr0DgzqBIAnLzQEvu320MtU5JEMSOTl5gL4NWkTxtWfLCYuuERBeMTxGgLA7tTLtmxt8uWoELut1ZcU/1BBI0CJRUGI4GzsbM+kNhYOgjY/j1tlNBml1vI/KCOM7nE+YZ7NXFxShMJ37VhR/FUc0hReCGmGXSr5J9fMfCPn+V9iGwyiHhqgnqQg/OS2zGUHTrO5vojlsYbEI0gnvgXzEWb1E9YkWbnFCHPRhJHjGpv9dI/ gooduser03@dut
+    setup: |
+      no username gooduser01
+      no username gooduser02
+      no username gooduser03
+      username gooduser01 privilege 1 role network-operator secret 5 $1$a5105WYA$Cae4ih1GWsMQRlA.fR1Wp1
+      username gooduser02 privilege 8 role network-operator nopassword
+      username gooduser03 privilege 6 role network-operator secret 5 $1$Zn3BYTLM$dAzIpKneVFKsh8W4qUStN/
+      username gooduser01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5iZvhXxj8s4wa4YW4qo7brnrlBfX6/gpF63IOV7AgymtxNKNtHRP7GY6Ko2oOFL8uKkPtvUhcJy9eEr6ngb7ffweZGP5ssBAt7yHsmW4F8GEDzpl+WGTQCN4+q7ofl2JFK+QklZc0v1+HdiCCZqFduJIR7LdrRGH/WhhiF26toeSiQchh4pMXT3n2oNRila57ssihXzEY1mA9pKQM6ke7z3GiI6VHOw+9bdfymsf+MiKI5rXCZuZbZGu9TceNpY2n/492v+/G088w5aFogn8WQ44ESFDBXymDxCmhdlye48qFVA2WMqqsB8wvkZiaVpkgfvXiukl/O5JEzkltdDc/ gooduser01@dut
+      username gooduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIq8HJyNeMrKqkdidMqOqC2/vDGR2j4khK6EbPyHZ3nVswIa/yeg7G4L+hk/ZBgramNq6ZSLUkpUJ82N625+Jd/+LhdyneXycHLEkFlAMW/vNPtby6uob2Ew0l9Ovems+vnKLmliuOwNq0pZ0BpQfbCgi6xk/uiokb2TQUE7b2oSACWf9lFUmkFTGXngiVPkd4iySXrX++E+/XjspZZ0+PPKQ25BNq7oCFdlecikC7rqlm/Eg+lsyqkC1eDejnzWyTNZbsD5qbBdOSLWKeqPSeVEf/sCq/R1dk26FpoSFXBPbqpcJCcMzjhPza7/VWalLu1XrbnqXCl4ieKltvFSc1 gooduser03@dut
+    present: |
+      username gooduser01 privilege 1 role network-operator nopassword
+      username gooduser02 privilege 12 role network-operator secret 5 $1$XvGXuTi9$RE5WoI023gM9cc5d04ztv1
+      username gooduser03 privilege 1 role network-operator secret 5 $1$j47ZatzU$ppPbrqfHZEqiR4G5QtdwG1
+      username gooduser01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5iZvhXxj8s4wa4YW4qo7brnrlBfX6/gpF63IOV7AgymtxNKNtHRP7GY6Ko2oOFL8uKkPtvUhcJy9eEr6ngb7ffweZGP5ssBAt7yHsmW4F8GEDzpl+WGTQCN4+q7ofl2JFK+QklZc0v1+HdiCCZqFduJIR7LdrRGH/WhhiF26toeSiQchh4pMXT3n2oNRila57ssihXzEY1mA9pKQM6ke7z3GiI6VHOw+9bdfymsf+MiKI5rXCZuZbZGu9TceNpY2n/492v+/G088w5aFogn8WQ44ESFDBXymDxCmhdlye48qFVA2WMqqsB8wvkZiaVpkgfvXiukl/O5JEzkltdDc/ gooduser01@dut
+      username gooduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClGC8wWqrnwttJ30NSnFyLkEhup9Z1PcKKcn5W5hMJ49kIG9Csozyq5PaZ9YaHFSDzndR5t8hU7ONOerFAYlHvISrwhkiJ6uRtRUKO1FZr0DgzqBIAnLzQEvu320MtU5JEMSOTl5gL4NWkTxtWfLCYuuERBeMTxGgLA7tTLtmxt8uWoELut1ZcU/1BBI0CJRUGI4GzsbM+kNhYOgjY/j1tlNBml1vI/KCOM7nE+YZ7NXFxShMJ37VhR/FUc0hReCGmGXSr5J9fMfCPn+V9iGwyiHhqgnqQg/OS2zGUHTrO5vojlsYbEI0gnvgXzEWb1E9YkWbnFCHPRhJHjGpv9dI/ gooduser03@dut
+    absent: |
+      username gooduser01 privilege 1 role network-operator secret 5 $1$a5105WYA$Cae4ih1GWsMQRlA.fR1Wp1
+      username gooduser02 privilege 8 role network-operator nopassword
+      username gooduser03 privilege 6 role network-operator secret 5 $1$Zn3BYTLM$dAzIpKneVFKsh8W4qUStN/
+      username gooduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIq8HJyNeMrKqkdidMqOqC2/vDGR2j4khK6EbPyHZ3nVswIa/yeg7G4L+hk/ZBgramNq6ZSLUkpUJ82N625+Jd/+LhdyneXycHLEkFlAMW/vNPtby6uob2Ew0l9Ovems+vnKLmliuOwNq0pZ0BpQfbCgi6xk/uiokb2TQUE7b2oSACWf9lFUmkFTGXngiVPkd4iySXrX++E+/XjspZZ0+PPKQ25BNq7oCFdlecikC7rqlm/Eg+lsyqkC1eDejnzWyTNZbsD5qbBdOSLWKeqPSeVEf/sCq/R1dk26FpoSFXBPbqpcJCcMzjhPza7/VWalLu1XrbnqXCl4ieKltvFSc1 gooduser03@dut
