@@ -1,4 +1,6 @@
 ---
 # defaults file for eos-system
+eos_save_running_config: true
+
 eos_ip_routing_enabled: no
 default_user_state: present
