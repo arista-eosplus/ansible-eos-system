@@ -31,7 +31,7 @@ no {{ username }}
          {% set username = username + " secret 5 %s" % item.secret %}
       {% elif item.encryption is defined and item.encryption == 'sha512' %}
          {# sha512 encrypted secret #}
-         {% set username = username + " secret sha5 %s" % item.secret %}
+         {% set username = username + " secret sha512 %s" % item.secret %}
       {% else %}
          {# unencrypted secret #}
          {% set username = username + " secret %s" % item.secret %}
