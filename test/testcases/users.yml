@@ -108,8 +108,6 @@ testcases:
       username baduser02 privilege 8 role network-operator secret 5 $1$j47ZatzU$ppPbrqfHZEqiR4G5QtdwG1
       username baduser03 privilege 6 role network-operator secret 5 $1$Zn3BYTLM$dAzIpKneVFKsh8W4qUStN/
       username baduser04 privilege 4 role network-admin secret sha512 $6$somesalt$rkDq7Az4Efjo.0vtRe7E/8UXZNB6.88eMNIaqLdpmULIFkw3gDNPFnjAX4Y9fiGFzVlOyaDr1X.YYUsczCeAB.
-      username baduser01 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5iZvhXxj8s4wa4YW4qo7brnrlBfX6/gpF63IOV7AgymtxNKNtHRP7GY6Ko2oOFL8uKkPtvUhcJy9eEr6ngb7ffweZGP5ssBAt7yHsmW4F8GEDzpl+WGTQCN4+q7ofl2JFK+QklZc0v1+HdiCCZqFduJIR7LdrRGH/WhhiF26toeSiQchh4pMXT3n2oNRila57ssihXzEY1mA9pKQM6ke7z3GiI6VHOw+9bdfymsf+MiKI5rXCZuZbZGu9TceNpY2n/492v+/G088w5aFogn8WQ44ESFDBXymDxCmhdlye48qFVA2WMqqsB8wvkZiaVpkgfvXiukl/O5JEzkltdDc/ baduser01@dut
-      username baduser03 sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIq8HJyNeMrKqkdidMqOqC2/vDGR2j4khK6EbPyHZ3nVswIa/yeg7G4L+hk/ZBgramNq6ZSLUkpUJ82N625+Jd/+LhdyneXycHLEkFlAMW/vNPtby6uob2Ew0l9Ovems+vnKLmliuOwNq0pZ0BpQfbCgi6xk/uiokb2TQUE7b2oSACWf9lFUmkFTGXngiVPkd4iySXrX++E+/XjspZZ0+PPKQ25BNq7oCFdlecikC7rqlm/Eg+lsyqkC1eDejnzWyTNZbsD5qbBdOSLWKeqPSeVEf/sCq/R1dk26FpoSFXBPbqpcJCcMzjhPza7/VWalLu1XrbnqXCl4ieKltvFSc1 baduser03@dut
 
   - name: Modify users
     arguments:
