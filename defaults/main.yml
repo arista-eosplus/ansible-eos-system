@@ -4,3 +4,5 @@ eos_save_running_config: true
 
 eos_ip_routing_enabled: no
 default_user_state: present
+
+resource_version: '2.2'
