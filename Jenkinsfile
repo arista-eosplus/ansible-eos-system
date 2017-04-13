@@ -1,32 +1,32 @@
 #!/usr/bin/env groovy
 
 /*
- * Jenkinsfile for ansible-eos-ipv4 role
+ * Jenkinsfile for ansible-eos-system role
  *
  * Run the Ansible-Role-Test job against a commit or
- * pull request in the ansible-eos-ipv4 repo
+ * pull request in the ansible-eos-system repo
  */
 
 // Change this comment to force a run of the pipeline  02
 
 pipeline {
-    agent{ label 'jenkins-exec-02'}
+    agent any
     options {
         buildDiscarder(
             // Only keep the 10 most recent builds
             logRotator(numToKeepStr:'10'))
     }
     environment {
-        projectName = 'ansible-eos-ipv4'
+        projectName = 'ansible-eos-system'
         emailTo = 'grybak@arista.com'
         emailFrom = 'grybak+jenkins@arista.com'
     }
 
     stages {
-        stage ('Run tests for ansible-eos-ipv4 role') {
+        stage ('Run tests for ansible-eos-system role') {
             steps {
                     build job: 'gar-test-starter',
-                          parameters: [string(name: 'ROLE_NAME', value: 'ansible-eos-ipv4')]
+                          parameters: [string(name: 'ROLE_NAME', value: 'ansible-eos-system')]
             }
             when {
                 // Only run against 'master' branch
