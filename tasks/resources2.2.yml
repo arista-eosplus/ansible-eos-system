@@ -12,7 +12,7 @@
     password: "{{ password | default(omit) }}"
     port: "{{ port | default(omit) }}"
     provider: "{{ provider | default(omit) }}"
-    transport: 'cli'
+    transport: "{{ transport | default(omit) }}"
     use_ssl: "{{ use_ssl | default(omit) }}"
     username: "{{ username | default(omit) }}"
   notify: save running config
@@ -29,7 +29,7 @@
     password: "{{ password | default(omit) }}"
     port: "{{ port | default(omit) }}"
     provider: "{{ provider | default(omit) }}"
-    transport: 'cli'
+    transport: "{{ transport | default(omit) }}"
     use_ssl: "{{ use_ssl | default(omit) }}"
     username: "{{ username | default(omit) }}"
   notify: save running config
@@ -49,7 +49,7 @@
     password: "{{ password | default(omit) }}"
     port: "{{ port | default(omit) }}"
     provider: "{{ provider | default(omit) }}"
-    transport: 'cli'
+    transport: "{{ transport | default(omit) }}"
     use_ssl: "{{ use_ssl | default(omit) }}"
     username: "{{ username | default(omit) }}"
   # Block output from this step, to prevent unwanted
@@ -73,7 +73,7 @@
       host: "{{ host | default(omit) }}"
       password: "{{ password | default(omit) }}"
       port: "{{ port | default(omit) }}"
-      transport: 'cli'
+      transport: "{{ transport | default(omit) }}"
       use_ssl: "{{ use_ssl | default(omit) }}"
       username: "{{ username | default(omit) }}"
     register: output
